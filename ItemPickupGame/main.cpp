@@ -1,4 +1,4 @@
-#define _CRT_NONSTDC_NO_WARNINGS
+#define _CRT_NONSTDC_NO_WARNINGS	//kbhit(), getch()を使用するための記述
 #define KEY_UP 72
 #define KEY_DOWN 80
 #define KEY_LEFT 75
@@ -26,7 +26,7 @@ char map[MAP_H][MAP_W] = {
 };
 
 //ゲームで扱う変数の定義
-int pl_x = 1, pl_y = 1;
+int player_x = 1, player_y = 1;
 int score = 0;
 int timer = 300;
 
@@ -56,20 +56,21 @@ void draw_map(void) {
 //main関数
 int main(void) {
 	while (1) {
+		//キー入力、プレイヤーの移動
 		int key = 0;
-		if (kbhit()) key = getch(); //キー入力
-		if (key == KEY_UP && map[pl_y - 1][pl_x] != '#')pl_y--;
-		if (key == KEY_DOWN && map[pl_y + 1][pl_x] != '#')pl_y++;
-		if (key == KEY_LEFT && map[pl_y][pl_x - 1] != '#')pl_x--;
-		if (key == KEY_RIGHT && map[pl_y][pl_x + 1] != '#')pl_x++;
+		if (kbhit()) key = getch(); 
+		if (key == KEY_UP && map[player_y - 1][player_x] != '#')player_y--;
+		if (key == KEY_DOWN && map[player_y + 1][player_x] != '#')player_y++;
+		if (key == KEY_LEFT && map[player_y][player_x - 1] != '#')player_x--;
+		if (key == KEY_RIGHT && map[player_y][player_x + 1] != '#')player_x++;
 		draw_map();
-		cursor(pl_x, pl_y);
+		cursor(player_x, player_y);
 		printf("p");
 		//Gを取得したときの処理
-		if (map[pl_y][pl_x] == 'G') {
+		if (map[player_y][player_x] == 'G') {
 			score += 1;
 			timer += 20;
-			map[pl_y][pl_x] = ' ';
+			map[player_y][player_x] = ' ';
 		}
 		timer--;
 		//Gを設置する
